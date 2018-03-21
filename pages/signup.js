@@ -6,6 +6,8 @@ import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
 import { Grid, Row, Col } from 'react-bootstrap';
 
 import { postCall } from '../services/api';
+import validator from 'validator';
+import Navtop from '../components/navtop';
 
 export default class SignUp extends React.Component {
 
@@ -17,7 +19,13 @@ export default class SignUp extends React.Component {
             confirm_password: '',
             fundraiser_type: '',
             phone: '',
-            organization_name: ''
+            organization_name: '',
+            emailError: '',
+            mismatchError: '',
+            passwordError: '',
+            phoneError: '',
+            fundraiserTypeError: '',
+            orgError: ''
         };
 
         this.handleEmailChange = this.handleEmailChange.bind(this);
@@ -28,6 +36,7 @@ export default class SignUp extends React.Component {
         this.handleOrgChange = this.handleOrgChange.bind(this);
 
         this.handleSubmit = this.handleSubmit.bind(this);
+        // this.handleValidations = this.handleValidations.bind(this);
     }
 
     handleEmailChange(event) {
@@ -49,33 +58,99 @@ export default class SignUp extends React.Component {
         this.setState({ organization_name: event.target.value });
     }
 
-    handleSubmit(event) {
-        alert('A name was submitted: ' + this.state.email + this.state.password + this.state.confirm_password + this.state.fundraiser_type + this.state.phone + this.state.organization_name);
-        // var object = {
-        //     "email": this.state.email,
-        //     "password": this.state.password,
-        //     "confirm_password": this.state.confirm_password,
-        //     "fundraiser_type": this.state.fundraiser_type,
-        //     "phone": this.state.phone,
-        //     "organization_name": this.state.organization_name
-        // }
+    handleValidations() {
+        var errorFlag = 0;
+        if (!validator.isEmail(this.state.email)) {
+            errorFlag = 1;
+            this.setState({
+                emailError: "Invalid email address"
+            })
 
-        // alert('body' + object);
-        // console.log(object);
+        }
+        if (!validator.isLength(this.state.password, { min: 6, max: 10 })) {
+            errorFlag = 1;
+            this.setState({
+                passwordError: "Min Length 6 and Max Length 10"
+            })
 
-        // axios.post("http://52.41.54.41:3001/fundraisers/", object).then(function (response) {
-        //     console.log(response);
-        // });
+        }
+        if (!validator.equals(this.state.password, this.state.confirm_password)) {
+            errorFlag = 1;
+            this.setState({
+                mismatchError: "Password Mismatch...Re enter password"
+            })
 
-        postCall("fundraisers/", this.state).then(function (response) {
-            console.log(response);
-            if (response.status == 200) {
-                alert("Sign Up Successful.....");
-            }
-            else {
-                alert("Sign Up Failure.....");
-            }
+        }
+        if (!validator.isNumeric(this.state.phone)) {
+
+
+            errorFlag = 1;
+            this.setState({
+                phoneError: "Invalid phone number"
+            })
+
+        }
+        if (!validator.isLength(this.state.phone, { min: 10, max: 10 })) {
+
+
+            errorFlag = 1;
+            this.setState({
+                phoneError: "Invalid phone number"
+            })
+
+        }
+        if (validator.isEmpty(this.state.fundraiser_type)) {
+            errorFlag = 1;
+            this.setState({
+                fundraiserTypeError: "Invalid Type"
+            })
+
+        }
+        if (validator.isEmpty(this.state.organization_name)) {
+            errorFlag = 1;
+            this.setState({
+                orgError: "Invalid Name"
+            })
+
+        }
+        if (errorFlag == 1)
+            return false;
+        else
+            return true;
+
+
+    }
+
+    clearErrorTexts() {
+
+        this.setState({
+            emailError: '',
+            mismatchError: '',
+            passwordError: '',
+            phoneError: '',
+            fundraiserTypeError: '',
+            orgError: ''
         });
+
+    }
+    handleSubmit(event) {
+        this.clearErrorTexts();
+        //alert('A name was submitted: ' + this.state.email + this.state.password + this.state.confirm_password + this.state.fundraiser_type + this.state.phone + this.state.organization_name);
+        if (this.handleValidations()) {
+            postCall("fundraisers/", this.state).then(function (response) {
+                console.log(response);
+                if (response.status == 200) {
+                    alert("Sign Up Successful.....");
+                }
+                else {
+                    alert("Sign Up Failure.....");
+                }
+            });
+
+        }
+
+
+
     }
 
 
@@ -83,7 +158,7 @@ export default class SignUp extends React.Component {
         return (
             <div>
 
-
+                <Navtop />
 
                 <Grid>
 
@@ -93,33 +168,6 @@ export default class SignUp extends React.Component {
                         <Col sm={6}>
                             <div class="hddiv">
                                 <h1 className="loginHeading">Sign Up</h1>
-                                {/* <Form>
-                                    <FormGroup>
-                                        <Label className="lbl" for="exampleEmail">  </Label>
-                                        <Input type="email" name="email" id="email" placeholder="Enter Email" value={this.state.email} onChange={this.handleEmailChange} />
-                                    </FormGroup>
-                                    <FormGroup>
-                                        <Label className="lbl" for="examplePassword"> </Label>
-                                        <Input type="password" name="password" id="password" placeholder="Enter Password" value={this.state.password} onChange={this.handlePasswordChange} />
-                                    </FormGroup>
-                                    <FormGroup>
-                                        <Label className="lbl" for="confirmPassword"> </Label>
-                                        <Input type="password" name="confirmPassword" id="confirmPassword" placeholder="Re-Enter Password" value={this.state.confirmPassword} onChange={this.handleReEnterChange} />
-                                    </FormGroup>
-                                    <FormGroup>
-                                        <Label className="lbl" for="fundRaiserType"> </Label>
-                                        <Input type="text" name="fundRaiserType" id="fundRaiserType" placeholder="Enter Fund Raiser Type" value={this.state.fundRaiserType} onChange={this.handleFundChange} />
-                                    </FormGroup><FormGroup>
-                                        <Label className="lbl" for="phone"> </Label>
-                                        <Input type="number" name="phone" id="phone" placeholder="Enter Phone Number" value={this.state.phone} onChange={this.handlePhoneChange} />
-                                    </FormGroup><FormGroup>
-                                        <Label className="lbl" for="organization"> </Label>
-                                        <Input type="text" name="organization" id="organization" placeholder="Enter Organization" value={this.state.organization} onChange={this.handleOrgChange} />
-                                    </FormGroup>
-
-
-
-                                </Form> */}
 
                                 <TextField
                                     hintText="Enter Email"
@@ -127,6 +175,7 @@ export default class SignUp extends React.Component {
                                     type="email"
                                     fullWidth={true}
                                     onChange={this.handleEmailChange}
+                                    errorText={this.state.emailError}
                                     id="email"
                                 />
                                 <TextField
@@ -136,14 +185,17 @@ export default class SignUp extends React.Component {
                                     fullWidth={true}
                                     id="password"
                                     onChange={this.handlePasswordChange}
+                                    errorText={this.state.passwordError}
 
                                 />
                                 <TextField
                                     hintText="Re-Enter Password"
                                     floatingLabelText="Confirm Password"
+                                    type="password"
                                     id="confirmPassword"
                                     fullWidth={true}
                                     onChange={this.handleReEnterChange}
+                                    errorText={this.state.mismatchError}
                                 />
                                 <TextField
                                     hintText="Enter Fund Raiser Type"
@@ -151,6 +203,7 @@ export default class SignUp extends React.Component {
                                     id="fundRaiserType"
                                     fullWidth={true}
                                     onChange={this.handleFundChange}
+                                    errorText={this.state.fundraiserTypeError}
                                 />
                                 <TextField
                                     hintText="Enter Phone Number"
@@ -158,6 +211,7 @@ export default class SignUp extends React.Component {
                                     id="phone"
                                     fullWidth={true}
                                     onChange={this.handlePhoneChange}
+                                    errorText={this.state.phoneError}
                                 />
                                 <TextField
                                     hintText="Enter Organization Name"
@@ -165,7 +219,7 @@ export default class SignUp extends React.Component {
                                     id="organization"
                                     fullWidth={true}
                                     onChange={this.handleOrgChange}
-
+                                    errorText={this.state.orgError}
                                 />
 
                                 <Row>

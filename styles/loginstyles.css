@@ -29,7 +29,7 @@ input{
     padding-right: 30px;
     border: 1px solid grey;
     border-radius: 5px;
-    margin-top: 30px;
+    margin-top: 100px;
     margin-bottom: 30px;
 }
 
@@ -43,10 +43,10 @@ input{
 
 .navbar{
     
-    border: 1px solid black;
-    background-color: grey;
-    font-weight: bold;
-    border-radius: 5px;
+    /* border: 1px solid black; */
+    background-color: #1b2229;
+    /* font-weight: bold; */
+    /* border-radius: 5px; */
 }
 /* .navbar-nav ul li a{
     
@@ -73,28 +73,41 @@ input{
 
 .subHead{
     font-weight:bold;
-    padding-left: 0px;
+    /* padding-left: 15px; */
 }
 .pdata{
+    font-size: 16px;
+    /* padding-left: 15px; */
+}
+.subHead1{
+    font-weight:bold;
+    padding-left: 15px;
+}
+.pdata1{
     font-size: 16px;
     padding-left: 15px;
 }
 .profileDiv{
-    border: 2px solid #E3E3E3;
-    margin-top: 100px;
-    padding-top: 50px;
+    /* border: 2px solid #E3E3E3; */
+    padding-top: 20px;
     padding-bottom: 50px;
-    border-radius: 5px;
-    box-shadow: 10px 10px #888888;
+    /* float: left; */
+    margin-left: 250px;
     /* box-shadow: inset 0 0 10px #000000; */
 }
+
+/* .updateDiv{
+   
+    border: 2px solid #E3E3E3;
+    box-shadow: 10px 10px #888888;
+} */
 .nameEmail{
     padding-left: 15px;
     
 }
 
 .name{
-    color: #1B466A;
+    /* color: #1B466A; */
     font-weight: bold;
 
 }
@@ -116,4 +129,76 @@ input{
     box-shadow: inset 0px -8px #888888;
     border: 1px solid #6c757d;
     margin-bottom: 0px;
+}
+
+.mySide{
+    width: 220px;
+    background-color: #1b2229;
+    color: white;
+   height: 100vh;
+   float: left;
+
+}
+
+.proimage{
+    width: 60px;
+    height: 60px;
+    border-radius: 30px;
+}
+
+.proname{
+    padding-left: 10px;
+}
+
+.myDrop{
+    background-color: #1b2229 !important;
+    border: none !important;
+}
+
+.btn-secondary {
+    color: #fff;
+    background-color: #1b2229 !important;
+    border: none !important;
+}
+
+.updateBtn{
+
+        border: 2px solid black;
+        background-color: #1c2229;
+        padding: 5px;
+        border-radius: 5px;
+        color: white;
+        float:right;
+}
+
+.updateFormDiv{
+    margin-left: 250px;
+}
+
+.myCol{
+    margin-left: 30px;
+    margin-right: 50px;
+}
+
+.upBtns{
+    margin-top: 30px;
+
+}
+.btnColor1{
+    background-color: grey !important;
+}
+
+.btnColor2{
+    background-color: #1c2229 !important;
+}
+
+
+.imgPreview{
+    height: 150px;
+    width: 200px;
+   
+}
+
+.btnCancel{
+    background-color: grey !important;
 }

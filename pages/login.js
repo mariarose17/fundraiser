@@ -19,8 +19,9 @@ export default class Login extends React.Component {
         this.handleEmailChange = this.handleEmailChange.bind(this);
         this.handlePasswordChange = this.handlePasswordChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleCancel = this.handleCancel.bind(this);
 
-      // localStorage.clear();
+        localStorage.clear();
     }
 
     handleEmailChange(event) {
@@ -29,20 +30,19 @@ export default class Login extends React.Component {
     handlePasswordChange(event) {
         this.setState({ password: event.target.value });
     }
-    handleSubmit(event) {
-        alert('A name was submitted: ' + this.state.email + this.state.password);
-        // var object = {
-        //     "email": this.state.email,
-        //     "password": this.state.password
 
-        // }
+    handleCancel(event) {
+        this.props.history.push('/home');
+    }
+    handleSubmit(event) {
+
         postCall("fundraisers/login", this.state).then((response) => {
 
 
             if (response.status == 200) {
-                alert("Login Successful....." + response.data.user_data.fundraiser_id);
+                // alert("Login Successful.....");
                 console.log(response);
-                console.log(this.props.history);
+                //console.log(this.props.history);
                 //this.props.history.push('/registeredUser');
                 this.userdata = response.data.user_data;
 
@@ -50,28 +50,19 @@ export default class Login extends React.Component {
 
                 this.auth = response.headers.auth;
                 localStorage.setItem('authdata', JSON.stringify(this.auth));
-                alert("to local..."+this.auth);
+                //alert("to local..."+this.auth);
 
                 var authValue = JSON.parse(localStorage.getItem('authdata'));
-                alert("from local..."+authValue);
+                //alert("from local..."+authValue);
 
-                
+
                 this.props.history.push({
                     pathname: '/registeredUser',
 
                     state: { detail: response.data }
                 })
 
-                // this.userdata = response.data.user_data;
 
-                // localStorage.setItem('UserData', JSON.stringify(this.userdata));
-
-                // this.auth = response.headers.auth;
-                // localStorage.setItem('authdata', JSON.stringify(this.auth));
-                // alert("to local..."+this.auth);
-
-                // var authValue = JSON.parse(localStorage.getItem('authdata'));
-                // alert("from local..."+authValue);
 
             }
             else {
@@ -79,7 +70,10 @@ export default class Login extends React.Component {
             }
 
 
-        });
+        })
+        .catch(function(error){
+            alert("Invalid login credentials....");
+        })
 
         // alert('body' + object);
         // console.log(object);
@@ -140,6 +134,7 @@ export default class Login extends React.Component {
                                 />
                                 <Row>
                                     <Col sm={6}>
+                                    <Button  type="button" className="btnCancel" onClick={this.handleCancel}>Cancel</Button>
                                     </Col>
                                     <Col sm={6}>
                                         <Button className="btnLogin" type="button" color="success" onClick={this.handleSubmit}>Login</Button>
