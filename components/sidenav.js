@@ -18,7 +18,7 @@ export default class MySideNav extends React.Component {
 
         this.toggle = this.toggle.bind(this);
         this.logout = this.logout.bind(this);
-       
+        
 
     }
 
